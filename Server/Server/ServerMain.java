@@ -14,12 +14,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.zip.Deflater;
 
+@SuppressWarnings("unused")
 public class ServerMain {
 	static int maxCon=0;
 	
@@ -33,12 +36,16 @@ public class ServerMain {
  		while(true){
  		Socket socket=server.accept();// accept when the user make a connection
    		sockets.add(socket);
+   		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+   		out.println("Hello World!");
+   		//socket.getOutputStream().write("Hello World!".getBytes("US-ASCII")); // or UTF-8 or any other applicable encoding...
+		 
    		
    		
-   		
-
+   				//close streams
+   		socket.close();
+   		out.close();
  		}
-		
 	}
 	 
 

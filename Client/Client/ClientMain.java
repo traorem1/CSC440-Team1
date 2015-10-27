@@ -18,6 +18,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.zip.Inflater;
+import java.util.zip.DataFormatException;
 
 public class ClientMain {
 
@@ -34,14 +36,11 @@ public class ClientMain {
 		Scanner scan = new Scanner(System.in);// get answers from the user
 		// loop over all the 10 questions
 		while (true) {
- 			System.out.print("Enter your answer as 3 numbers here  ");
-			String s = scan.nextLine();
-
-			outclient.println(s);// send the answer to the server to verify it
-
+ 			System.out.print(BR.readLine());
+				
 		}
-		socketclient.close();
+		//socketclient.close();
 
 	}
 
-}
+ }

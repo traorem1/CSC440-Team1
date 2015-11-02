@@ -9,15 +9,9 @@
 
 
 package Server;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
+import java.security.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.zip.Deflater;
@@ -31,22 +25,86 @@ public class ServerMain {
 	public static ServerSocket server;// cretaing a server
 	public static  void main(String []args ) throws IOException{
 		
- 		server=new ServerSocket(8889);// specifying the port
+ 		/*server=new ServerSocket(8889);// specifying the port
  		// loop while the number of user less than the maximum allowed number
  		while(true){
  		Socket socket=server.accept();// accept when the user make a connection
    		sockets.add(socket);
    		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-   		out.println("Hello World!");
+   		out.println("Hello World!");*/
    		//socket.getOutputStream().write("Hello World!".getBytes("US-ASCII")); // or UTF-8 or any other applicable encoding...
 		 
    		
    		
-   				//close streams
-   		socket.close();
-   		out.close();
- 		}
+   		//test multi threaded below
+   		int i=0;
+
+   	    try{
+   	      ServerSocket listener = new ServerSocket(8889);
+   	      Socket server;
+
+   	      while(true){//perhaps replace true with a variable
+   	        doComms connection;
+
+   	        server = listener.accept();
+   	        doComms conn_c= new doComms(server);
+   	        Thread t = new Thread(conn_c);
+   	        t.start();
+   	      }
+   	    } catch (IOException ioe) {//replace this with call to logging thread
+   	      System.out.println("IOException on socket listen: " + ioe);
+   	      ioe.printStackTrace();
+   	    }
+   	//close streams
+   		//socket.close();
+   		//out.close();
+   	  }
+   		/*
+   		DataInputStream d = new DataInputStream(in);
+ 
+ with: 
+     BufferedReader d
+          = new BufferedReader(new InputStreamReader(in));
+
+*/
+   		
+   				
+ 		
 	}
+
+class doComms implements Runnable {
+    private Socket server;
+    private String line,input;
+
+    doComms(Socket server) {
+      this.server=server;
+    }
+
+    public void run () {
+
+      input="";
+
+      try {
+        // Get input from the client
+        BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        PrintStream out = new PrintStream(server.getOutputStream());
+
+        while((line = in.readLine()) != null) {
+          input=input + line;
+        }
+
+        // Now write to the client
+        //rework the below
+
+        System.out.println("Overall message is:" + input);
+        out.println("Overall message is:" + input);
+
+        server.close();
+      } catch (IOException ioe) {
+        System.out.println("IOException on socket listen: " + ioe);
+        ioe.printStackTrace();
+      }
+    }
 	 
 
 }

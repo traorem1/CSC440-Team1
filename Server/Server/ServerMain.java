@@ -11,6 +11,8 @@
 package Server;
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -81,9 +83,9 @@ class doComms implements Runnable {
     }
 
     public void run () {
-
+    	
       input="";
-
+      
       try {
         // Get input from the client
         BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
@@ -92,15 +94,33 @@ class doComms implements Runnable {
         while((line = in.readLine()) != null) {
           input=input + line;
         }
+        
+        File f = new File(input);
+        if(f.exists() && !f.isDirectory()) { 
+        	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
+        	stream.readFully(Files.readAllBytes(Paths.get(input)));*/
+        	line = "HTTP/1.1 200 OK" + System.lineSeparator() + "Content-Length: " + f.length() + System.lineSeparator();
+        	line += "Content-Type: text/plain" + System.lineSeparator();
+        	
+        	out.print(new String(Files.readAllBytes(Paths.get(input))));
+        	out.println();
+        	out.flush();
+        }
+        else{
+        	out.println("HTTP/1.1 404 Not Found");
+        	out.flush();
+        	//logging here
+        }
+        
 
-        // Now write to the client
-        //rework the below
-
-        System.out.println("Overall message is:" + input);
-        out.println("Overall message is:" + input);
-
+        /*System.out.println("Overall message is:" + input);
+        out.println("Overall message is:" + input);*/
+        
+        
+        in.close();
+        out.close();
         server.close();
-      } catch (IOException ioe) {
+      } catch (IOException ioe) {//replace with passing to Logging Thread
         System.out.println("IOException on socket listen: " + ioe);
         ioe.printStackTrace();
       }

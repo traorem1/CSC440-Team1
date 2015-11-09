@@ -102,8 +102,7 @@ class doComms implements Runnable {
         	line = "HTTP/1.1 200 OK" + System.lineSeparator() + "Content-Length: " + f.length() + System.lineSeparator();
         	line += "Content-Type: text/plain" + System.lineSeparator();
         	
-        	out.print(new String(Files.readAllBytes(Paths.get(input))));
-        	out.println();
+        	out.println(new String(Files.readAllBytes(Paths.get(input))));
         	out.flush();
         }
         else{

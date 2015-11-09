@@ -95,18 +95,21 @@ class doComms implements Runnable {
           input=input + line;
         }
         
-        File f = new File(input);//update this line to parse the http header/message and set input to be the file path/name 
+        
+        String[] header = input.split("\\s+");
+        File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /
         if(f.exists() && !f.isDirectory()) { 
         	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
         	stream.readFully(Files.readAllBytes(Paths.get(input)));*/
-        	line = "HTTP/1.1 200 OK" + System.lineSeparator() + "Content-Length: " + f.length() + System.lineSeparator();
-        	line += "Content-Type: text/plain" + System.lineSeparator();
-        	
+        	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + f.length() + "\r\n";
+        	line += "Content-Type: text/plain" + "\r\n\r\n";
+        	out.print(line);
+        	out.flush();
         	out.println(new String(Files.readAllBytes(Paths.get(input))));
         	out.flush();
         }
         else{
-        	out.println("HTTP/1.1 404 Not Found");
+        	out.print("HTTP/1.1 404 Not Found\r\n\r\n");
         	out.flush();
         	//logging here
         }

@@ -17,30 +17,35 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.zip.Inflater;
 import java.util.zip.DataFormatException;
 
 public class ClientMain {
 
 	public static void main(String[] args) throws IOException {
-		InputStreamReader inclient = null, inclient1;
+		String server = "localhost";
+		String output = "";
+		String fileToRequest = "magic.txt";//TODO: add code to properly determine and set this
+		
+		InputStreamReader inclient = null;
 		PrintWriter outclient;
-		Socket socketclient;
- 		socketclient = new Socket("localhost", 8889);// client make connection
+		Socket socketclient = new Socket(server, 8889);// client make connection
  		// used to send answers to server
 		outclient = new PrintWriter(socketclient.getOutputStream(),true);// to send things to server
 		inclient = new InputStreamReader(socketclient.getInputStream());//get things from server
 		BufferedReader BR = new BufferedReader(inclient);// read what sent from server
 		
-		Scanner scan = new Scanner(System.in);// get answers from the user
-		// loop over all the 10 questions
-		while (true) {
- 			System.out.print(BR.readLine());
-				
+		output = "GET /" + fileToRequest + "HTTP/1.1\r\n" + "Host: " + server + "\r\n\r\n";
+		outclient.print(output);
+		outclient.flush();
+		
+		while(true){//talk to server replace true with something appropriate
+			//talk to server + get file logic
+			break;//get rid of this. this is here to prevent code out of reach error message
 		}
-		//socketclient.close();
-
+		
+		
+		socketclient.close();
 	}
 
  }

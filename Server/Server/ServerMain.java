@@ -95,7 +95,7 @@ class doComms implements Runnable {
           input=input + line;
         }
         
-        File f = new File(input);
+        File f = new File(input);//update this line to parse the http header/message and set input to be the file path/name 
         if(f.exists() && !f.isDirectory()) { 
         	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
         	stream.readFully(Files.readAllBytes(Paths.get(input)));*/

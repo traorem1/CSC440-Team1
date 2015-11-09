@@ -101,7 +101,7 @@ class doComms implements Runnable {
         if(f.exists() && !f.isDirectory()) { 
         	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
         	stream.readFully(Files.readAllBytes(Paths.get(input)));*/
-        	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + f.length() + "\r\n";
+        	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) f.length() + "\r\n";
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);
         	out.flush();

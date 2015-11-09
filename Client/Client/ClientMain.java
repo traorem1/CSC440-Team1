@@ -26,6 +26,7 @@ public class ClientMain {
 		String server = "localhost";
 		String output = "";
 		String fileToRequest = "magic.txt";//TODO: add code to properly determine and set this
+		String input = "";
 		
 		InputStreamReader inclient = null;
 		PrintWriter outclient;
@@ -39,9 +40,32 @@ public class ClientMain {
 		outclient.print(output);
 		outclient.flush();
 		
-		while(true){//talk to server replace true with something appropriate
-			//talk to server + get file logic
-			break;//get rid of this. this is here to prevent code out of reach error message
+		while((input = BR.readLine()) != null){
+			int length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
+			if (input == "HTTP/1.1 404 Not Found")
+			{
+				//TODO: handle error
+				break;
+			}
+			else if(input == "HTTP/1.1 200 OK"){
+				input = BR.readLine();
+				String[] splitHeader = input.split("\\s+");
+				try{
+				length = Integer.parseInt(splitHeader[splitHeader.length - 1]);
+				}
+				catch (NumberFormatException badNum)
+				{
+					length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
+				}
+			}
+			else if(input == "Content-Type: text/plain")
+			{
+				String file = "";
+				char[] buf = null;
+				BR.read(buf, 0, length);//TODO: remove any leading new lines, they might cause this line to trim the end of the file examine this and use offset to skip starting new lines if any
+				file = buf.toString();
+			}
+			
 		}
 		
 		

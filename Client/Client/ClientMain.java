@@ -40,30 +40,43 @@ public class ClientMain {
 		outclient.print(output);
 		outclient.flush();
 		
-		while((input = BR.readLine()) != null){
+		System.out.println("Hello World!");
+		System.out.println(BR.readLine());
+		//while((input = BR.readLine()) != null){
+		while(true){
+			input = BR.readLine();//remove and change while condition later
+			System.out.println("while");
 			int length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
-			if (input == "HTTP/1.1 404 Not Found")
+			System.out.println("while loop");
+			if (input.contains("HTTP/1.1 404 Not Found"))
 			{
+				System.out.println("404 Error Found");
 				//TODO: handle error
 				break;
 			}
-			else if(input == "HTTP/1.1 200 OK"){
+			else if(input.contains("HTTP/1.1 200 OK")){
 				input = BR.readLine();
+				System.out.println("202 code");
 				String[] splitHeader = input.split("\\s+");
 				try{
 				length = Integer.parseInt(splitHeader[splitHeader.length - 1]);
 				}
+				
 				catch (NumberFormatException badNum)
 				{
 					length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
 				}
 			}
-			else if(input == "Content-Type: text/plain")
+			else if(input.contains("Content-Type: text/plain"))
 			{
 				String file = "";
 				char[] buf = null;
 				BR.read(buf, 0, length);//TODO: remove any leading new lines, they might cause this line to trim the end of the file examine this and use offset to skip starting new lines if any
 				file = buf.toString();
+				System.out.println(file);
+				PrintWriter writer = new PrintWriter("output_11092015.txt", "UTF-8");
+				writer.println(file);
+				writer.close();
 			}
 			
 		}

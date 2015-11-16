@@ -94,7 +94,7 @@ class doComms implements Runnable {
         while((line = in.readLine()) != null) {
           input=input + line;
         }
-        
+        System.out.println(input);
         
         String[] header = input.split("\\s+");
         File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /

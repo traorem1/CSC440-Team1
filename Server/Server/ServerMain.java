@@ -1,13 +1,3 @@
-// Name :Sidiya Sidiya 
-//Instructor:  Dr Gary Newell  
-//Program #2 
-// due 4/22/2015
-//This program will deal with multithread letting 4 user to connect on the same time and 
-//playing the same game .
-// the server will handle this issue and let one user to start and still waiting for another
-//player to show up and make sure the total of player not exceed 4.
-
-
 package Server;
 import java.io.*;
 import java.net.*;
@@ -20,7 +10,7 @@ import java.util.zip.Deflater;
 
 @SuppressWarnings("unused")
 public class ServerMain {
-	static int maxCon=0;
+	static int maxCon=5000;
 	
 	public static ArrayList<Socket> sockets=new ArrayList<Socket>();// to add the created socket
 	public static ArrayList<String > ids =new ArrayList<String>();//to add the ids of the sockets 

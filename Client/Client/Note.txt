@@ -1,0 +1,14 @@
+current layout idea
+
+Class Main{
+
+static void main (sting[] args){
+//Handle UI stuff
+//Spawn Worker thread for each connection wanted
+}
+}
+
+class worker{
+//handles a connection
+//How should the file name to be requested be determined?
+}

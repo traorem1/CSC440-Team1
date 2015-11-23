@@ -59,11 +59,11 @@ public class ClientMain {
                             {
                                  break;
                             }
-                            input+=line;
+                            input= input + System.lineSeparator() + line;
                         }
-			System.out.println("while");
+			//System.out.println("while");
 			int length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
-			System.out.println("while loop");
+			//System.out.println("while loop");
 			if (input.contains("HTTP/1.1 404 Not Found"))
 			{
 				System.out.println("404 Error Found");
@@ -82,23 +82,34 @@ public class ClientMain {
 				{
 					length = Integer.MAX_VALUE;//this is to ensure that if length fails to set/be parsed then the reader will read everything in the buffer hopefully retreiving the file anyway
 				}
-			}
-			else if(input.contains("Content-Type: text/plain"))
-			{
+                                //read file
 				String file = "";
-				char[] buf = null;
-				BR.read(buf, 0, length);//TODO: remove any leading new lines, they might cause this line to trim the end of the file examine this and use offset to skip starting new lines if any
-				file = buf.toString();
-				System.out.println(file);
+				//char[] buf = null;
+				//BR.read(buf, 0, length);//TODO: remove any leading new lines, they might cause this line to trim the end of the file examine this and use offset to skip starting new lines if any
+                                //input = "";//blank out input
+                                while ((line=BR.readLine()) != null )
+                    {
+                         
+                            input= input + System.lineSeparator() + line;
+                            if (line.isEmpty())
+                            {
+                                 break;
+                            }
+                        }
+                                
+				//file = buf.toString();
+				System.out.println(input);
 				PrintWriter writer = new PrintWriter("output_11092015.txt", "UTF-8");
-				writer.println(file);
+				writer.println(input);
 				writer.close();
+                                //TODO: ensure the thread stops here and that all objects are closed first
 			}
+                        }
 			
 		}
 		
 		
-		socketclient.close();
+		//socketclient.close();
 	}
 
- }
+ //}

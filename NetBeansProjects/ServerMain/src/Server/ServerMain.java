@@ -101,6 +101,12 @@ class doComms implements Runnable {
         
         String[] header = input.split("\\s+");
         File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /
+        //System.out.println(f.exists());
+        //System.out.println(f.getName());
+        /* String current = new java.io.File( "." ).getCanonicalPath();
+        System.out.println("Current dir:"+current);
+ String currentDir = System.getProperty("user.dir");
+        System.out.println("Current dir using System:" +currentDir);*/
         if(f.exists() && !f.isDirectory()) { 
         	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
         	stream.readFully(Files.readAllBytes(Paths.get(input)));*/
@@ -108,7 +114,7 @@ class doComms implements Runnable {
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);
         	out.flush();
-        	out.println(new String(Files.readAllBytes(Paths.get(input))));
+        	out.println(new String(Files.readAllBytes(Paths.get(f.getPath()))));
         	out.flush();
         }
         else{

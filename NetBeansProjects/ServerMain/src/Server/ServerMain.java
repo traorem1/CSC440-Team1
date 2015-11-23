@@ -94,13 +94,16 @@ class doComms implements Runnable {
             {
                 break;
             }
-            input+=line;
+            input+=line;//I know this trims off the newline characters, but don't fix it
         }
         
         System.out.println(input);
         
         String[] header = input.split("\\s+");
         File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /
+        
+        //uncomment the next two lines to get the folder where the server will check for the files.
+        
         //System.out.println(f.exists());
         //System.out.println(f.getName());
         /* String current = new java.io.File( "." ).getCanonicalPath();

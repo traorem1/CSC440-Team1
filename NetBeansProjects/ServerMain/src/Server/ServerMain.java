@@ -12,9 +12,9 @@ import java.util.zip.Deflater;
 public class ServerMain {
 	static int maxCon=5000;
 	
-	public static ArrayList<Socket> sockets=new ArrayList<Socket>();// to add the created socket
+	/*public static ArrayList<Socket> sockets=new ArrayList<Socket>();// to add the created socket
 	public static ArrayList<String > ids =new ArrayList<String>();//to add the ids of the sockets 
-	public static ServerSocket server;// cretaing a server
+	public static ServerSocket server;// cretaing a server*/
 	public static  void main(String []args ) throws IOException{
 		
  		/*server=new ServerSocket(8889);// specifying the port
@@ -29,7 +29,6 @@ public class ServerMain {
    		
    		
    		//test multi threaded below
-   		int i=0;
 
    	    try{
    	      ServerSocket listener = new ServerSocket(8889);
@@ -37,8 +36,14 @@ public class ServerMain {
 
    	      while(true){//perhaps replace true with a variable
    	        doComms connection;
-
+   	        /*
+   	         * see slides 9 number 29 and implement that for the file 
+   	         * generator
+   	         */
    	        server = listener.accept();
+                //PrintStream out = new PrintStream(server.getOutputStream());
+                //out.println("Arch Linus Rocks!");
+                //out.flush();
    	        doComms conn_c= new doComms(server);
    	        Thread t = new Thread(conn_c);
    	        t.start();
@@ -80,10 +85,18 @@ class doComms implements Runnable {
         // Get input from the client
         BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
         PrintStream out = new PrintStream(server.getOutputStream());
-
-        while((line = in.readLine()) != null) {
-          input=input + line;
+        //out.println("Arch Linux Rocks!");//remove
+        out.flush();
+        boolean done = true;
+        //System.out.println(in.readLine());
+        while ((line=in.readLine()) != null ){
+            if (line.isEmpty())
+            {
+                break;
+            }
+            input+=line;
         }
+        
         System.out.println(input);
         
         String[] header = input.split("\\s+");

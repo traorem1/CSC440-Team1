@@ -3,32 +3,10 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.*;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.zip.Deflater;
 
-@SuppressWarnings("unused")
 public class ServerMain {
-	static int maxCon=5000;
-	
-	/*public static ArrayList<Socket> sockets=new ArrayList<Socket>();// to add the created socket
-	public static ArrayList<String > ids =new ArrayList<String>();//to add the ids of the sockets 
-	public static ServerSocket server;// cretaing a server*/
+    
 	public static  void main(String []args ) throws IOException{
-		
- 		/*server=new ServerSocket(8889);// specifying the port
- 		// loop while the number of user less than the maximum allowed number
- 		while(true){
- 		Socket socket=server.accept();// accept when the user make a connection
-   		sockets.add(socket);
-   		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-   		out.println("Hello World!");*/
-   		//socket.getOutputStream().write("Hello World!".getBytes("US-ASCII")); // or UTF-8 or any other applicable encoding...
-		 
-   		
-   		
-   		//test multi threaded below
 
    	    try{
    	      ServerSocket listener = new ServerSocket(8889);
@@ -52,21 +30,7 @@ public class ServerMain {
    	      System.out.println("IOException on socket listen: " + ioe);
    	      ioe.printStackTrace();
    	    }
-   	//close streams
-   		//socket.close();
-   		//out.close();
    	  }
-   		/*
-   		DataInputStream d = new DataInputStream(in);
- 
- with: 
-     BufferedReader d
-          = new BufferedReader(new InputStreamReader(in));
-
-*/
-   		
-   				
- 		
 	}
 
 class doComms implements Runnable {
@@ -85,7 +49,6 @@ class doComms implements Runnable {
         // Get input from the client
         BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
         PrintStream out = new PrintStream(server.getOutputStream());
-        //out.println("Arch Linux Rocks!");//remove
         out.flush();
         boolean done = true;
         //System.out.println(in.readLine());
@@ -104,15 +67,11 @@ class doComms implements Runnable {
         
         //uncomment the next two lines to get the folder where the server will check for the files.
         
-        //System.out.println(f.exists());
-        //System.out.println(f.getName());
         /* String current = new java.io.File( "." ).getCanonicalPath();
         System.out.println("Current dir:"+current);
  String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir using System:" +currentDir);*/
         if(f.exists() && !f.isDirectory()) { 
-        	/*DataInputStream stream = new DataInputStream(new FileInputStream(f));
-        	stream.readFully(Files.readAllBytes(Paths.get(input)));*/
         	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) f.length() + "\r\n";
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);
@@ -125,11 +84,6 @@ class doComms implements Runnable {
         	out.flush();
         	//logging here
         }
-        
-
-        /*System.out.println("Overall message is:" + input);
-        out.println("Overall message is:" + input);*/
-        
         
         in.close();
         out.close();

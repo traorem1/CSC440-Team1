@@ -1,25 +1,11 @@
-// Name :Sidiya Sidiya 
-//Instructor:  Dr Gary Newell  
-//Program #2 
-// due 4/22/2015
-//This program will deal with multithread letting 4 user to connect on the same time and 
-//playing the same game .
-// the server will handle this issue and let one user to start and still waiting for another
-//player to show up and make sure the total of player not exceed 4.
-
-//Import some useful libraries and classes
 package Client;
+//Import some useful libraries and classes
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.zip.Inflater;
-import java.util.zip.DataFormatException;
 
 public class ClientMain {
 

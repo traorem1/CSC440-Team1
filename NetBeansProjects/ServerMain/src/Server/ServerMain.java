@@ -3,9 +3,14 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerMain {
     
@@ -57,9 +62,15 @@ class doComms implements Runnable {
     }
 
     public void run () {
-    	
+    	SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+        Date now = new Date();
+        String startTime = sdfTime.format(now);
+        
+        int size = 0;
+        String cacheResult = "";
+        int statusCode = 0;
       input="";
-      //System.out.println(fileCache.get("apple"));
+      
       try {
         // Get input from the client
         BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
@@ -80,23 +91,23 @@ class doComms implements Runnable {
         String[] header = input.split("\\s+");
         File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /
         
-        //uncomment the next two lines to get the folder where the server will check for the files.
-        
-        /* String current = new java.io.File( "." ).getCanonicalPath();
-        System.out.println("Current dir:"+current);
- String currentDir = System.getProperty("user.dir");
-        System.out.println("Current dir using System:" +currentDir);*/
         if (fileCache.containsKey(f.getName()))
         {
-            line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) fileCache.get(f.getName()).toString().length() + "\r\n";
+            cacheResult = "hit";
+            size = (int) fileCache.get(f.getName()).toString().length();
+            statusCode = 200;
+            line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + size + "\r\n";
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);
         	out.flush();
         	out.println(fileCache.get(f.getName()));
         	out.flush();
         }
-        else if(f.exists() && !f.isDirectory()) { 
-        	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) f.length() + "\r\n";
+        else if(f.exists() && !f.isDirectory()) {
+                cacheResult = "miss";
+                size = (int) f.length();
+                statusCode = 200;
+        	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + size + "\r\n";
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);
         	out.flush();
@@ -104,18 +115,32 @@ class doComms implements Runnable {
         	out.flush();
         }
         else{
+                statusCode = 404;
         	out.print("HTTP/1.1 404 Not Found\r\n\r\n");
         	out.flush();
-        	//logging here
         }
+        now = new Date();
+        String endTime = sdfTime.format(now);
+        
+        this.print("localhost/" + f.getName(), startTime, endTime, size , cacheResult, statusCode);
         
         in.close();
         out.close();
         server.close();
-      } catch (IOException ioe) {//replace with passing to Logging Thread
+      } catch (IOException ioe) {
         System.out.println("IOException on socket listen: " + ioe);
         ioe.printStackTrace();
       }
+    }
+    
+    private synchronized void print(String url,String startTime, String endTime, int fileSize, String cacheBool, int statusCode)
+    {
+        String entry = url + " " + startTime + " " + endTime + " " + fileSize + " " + cacheBool + " " + statusCode;
+        try {
+            Files.write(Paths.get("log.txt"), entry.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException ex) {
+            Logger.getLogger(doComms.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 	 
 

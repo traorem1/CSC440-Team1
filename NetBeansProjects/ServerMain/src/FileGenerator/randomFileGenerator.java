@@ -23,7 +23,7 @@ public class randomFileGenerator {
             File names = new File("fileGeneration.txt");
             BufferedReader reader = new BufferedReader(new FileReader(names));
             String input = "",line;
-            input = reader.readLine();
+            input = reader.readLine();//the first is done outside of the loop so we dont get an extra line
             while ((line = reader.readLine()) != null)
             {
                 input = input + " " + line;//read file names into string

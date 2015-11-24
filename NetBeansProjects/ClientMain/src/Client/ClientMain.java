@@ -12,7 +12,7 @@ public class ClientMain {
 	public static void main(String[] args) throws IOException {
 		String server = "localhost";
 		String output = "";
-		String fileToRequest = "test19.txt";//TODO: add code to properly determine and set this
+		String fileToRequest = "test1.txt";//TODO: add code to properly determine and set this
 		String input = "";
                 String line;
 		

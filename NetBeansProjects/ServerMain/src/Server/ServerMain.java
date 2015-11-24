@@ -3,11 +3,24 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class ServerMain {
     
-	public static  void main(String []args ) throws IOException{
-
+	public static void main(String []args ) throws IOException{
+            Map<String, String> cache = new HashMap<String, String>();
+            
+            File fileName = new File(".");
+            File[] fileList = fileName.listFiles();
+            for (int i = 0; i < 16; i++) {
+                if(fileList[i].getName().contains("test") && !fileList[i].isDirectory())
+                {
+                    cache.put(fileList[i].getName(), new Scanner(fileList[i]).next());
+                }
+            }
+            
    	    try{
    	      ServerSocket listener = new ServerSocket(8889);
    	      Socket server;
@@ -22,7 +35,7 @@ public class ServerMain {
                 //PrintStream out = new PrintStream(server.getOutputStream());
                 //out.println("Arch Linus Rocks!");
                 //out.flush();
-   	        doComms conn_c= new doComms(server);
+   	        doComms conn_c= new doComms(server,cache);
    	        Thread t = new Thread(conn_c);
    	        t.start();
    	      }
@@ -36,15 +49,17 @@ public class ServerMain {
 class doComms implements Runnable {
     private Socket server;
     private String line,input;
+    Map fileCache;
 
-    doComms(Socket server) {
+    doComms(Socket server, Map files) {
       this.server=server;
+      this.fileCache=files;
     }
 
     public void run () {
     	
       input="";
-      
+      //System.out.println(fileCache.get("apple"));
       try {
         // Get input from the client
         BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
@@ -71,7 +86,16 @@ class doComms implements Runnable {
         System.out.println("Current dir:"+current);
  String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir using System:" +currentDir);*/
-        if(f.exists() && !f.isDirectory()) { 
+        if (fileCache.containsKey(f.getName()))
+        {
+            line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) fileCache.get(f.getName()).toString().length() + "\r\n";
+        	line += "Content-Type: text/plain" + "\r\n\r\n";
+        	out.print(line);
+        	out.flush();
+        	out.println(fileCache.get(f.getName()));
+        	out.flush();
+        }
+        else if(f.exists() && !f.isDirectory()) { 
         	line = "HTTP/1.1 200 OK" + "\r\n" + "Content-Length: " + (int) f.length() + "\r\n";
         	line += "Content-Type: text/plain" + "\r\n\r\n";
         	out.print(line);

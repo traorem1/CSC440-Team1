@@ -86,7 +86,7 @@ class doComms implements Runnable {
             input+=line;//I know this trims off the newline characters, but don't fix it
         }
         
-        System.out.println(input);
+        //System.out.println(input);
         
         String[] header = input.split("\\s+");
         File f = new File(header[1].substring(1));//header[1].substring(1);//removes the /
@@ -135,7 +135,7 @@ class doComms implements Runnable {
     
     private synchronized void print(String url,String startTime, String endTime, int fileSize, String cacheBool, int statusCode)
     {
-        String entry = url + " " + startTime + " " + endTime + " " + fileSize + " " + cacheBool + " " + statusCode;
+        String entry = url + " " + startTime + " " + endTime + " " + fileSize + " " + cacheBool + " " + statusCode + System.lineSeparator();
         try {
             Files.write(Paths.get("log.txt"), entry.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException ex) {

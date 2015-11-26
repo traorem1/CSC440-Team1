@@ -1,0 +1,30 @@
+﻿
+localhost/magic.txt 19:21:07 19:21:07 12 miss 200
+localhost/favicon.ico 19:21:07 19:21:07 0  404
+localhost/test11.txt 19:21:15 19:21:15 83612 miss 200
+localhost/t 19:21:21 19:21:21 0  404
+localhost/ttestsgs 19:21:25 19:21:25 0  404
+localhost/ttestsgs 19:21:27 19:21:27 0  404
+localhost/test12.txt 19:21:34 19:21:34 19202 hit 200
+localhost/etstsgsgsdfgsdergxddhdrhdhdhydrhdfhdrdhdhdhdfhdhdhdhdh 19:22:32 19:22:32 0  404
+localhost/favicon.ico 19:22:32 19:22:32 0  404
+localhost/favicon.ico 19:22:32 19:22:32 0  404
+localhost/magic.txt 19:22:40 19:22:40 12 miss 200
+localhost/test22.txt 19:22:48 19:22:48 0  404
+localhost/test20.txt 19:22:54 19:22:54 5012 hit 200
+localhost/404.html 19:29:05 19:29:05 127 miss 404
+localhost/404.html 19:29:22 19:29:22 120 miss 404
+localhost/404.html 19:29:22 19:29:22 120 miss 404
+localhost/404.html 19:29:32 19:29:32 120 miss 404
+localhost/404.html 19:29:34 19:29:34 120 miss 404
+localhost/404.html 19:29:35 19:29:35 120 miss 404
+localhost/404.html 19:30:54 19:30:54 120 miss 404
+localhost/404.html 19:36:10 19:36:10 120 miss 404
+localhost/404.html 19:36:29 19:36:29 120 miss 404
+localhost/404.html 19:36:30 19:36:30 120 miss 404
+localhost/test20.txt 19:37:34 19:37:34 5012 hit 200
+localhost/test2.txt 19:37:42 19:37:42 18631 miss 200
+localhost/magic.txt 19:37:51 19:37:51 12 miss 200
+localhost/404.html 19:37:56 19:37:56 120 miss 404
+localhost/404.html 19:38:03 19:38:03 120 miss 200
+localhost/404.html 19:38:12 19:38:12 120 miss 404

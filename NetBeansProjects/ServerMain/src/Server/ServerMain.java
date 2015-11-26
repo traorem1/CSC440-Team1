@@ -115,8 +115,15 @@ class doComms implements Runnable {
         	out.flush();
         }
         else{
+                f = new File("404.html");
+                cacheResult = "miss";
+                size = (int) f.length();
                 statusCode = 404;
-        	out.print("HTTP/1.1 404 Not Found\r\n\r\n");
+                line = "HTTP/1.1 404 Not Found" + "\r\n" + "Content-Length: " + size + "\r\n";
+        	line += "Content-Type: text/html" + "\r\n\r\n";
+        	out.print(line);
+        	out.flush();
+        	out.println(new String(Files.readAllBytes(Paths.get(f.getPath()))));
         	out.flush();
         }
         now = new Date();
